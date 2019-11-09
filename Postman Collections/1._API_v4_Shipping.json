@@ -1,0 +1,1593 @@
+{
+  "info": {
+    "_postman_id": "244a8bde-7157-4f6f-988d-eb1348a9decd",
+    "name": "1. API v4 Shipping",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Validation",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "12acabe3-9e91-45a0-98ff-97a7a44c2741",
+            "exec": [
+              "var moment = require('moment');",
+              "pm.environment.set(\"packageId\", \"V4API\" + moment());",
+              "console.log(moment());"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "4812815e-dd0c-48bc-a15c-78ab707285e0",
+            "exec": [
+              "pm.test(\"Request is successful\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Response is ok\", function () { ",
+              "    pm.response.to.not.be.error; ",
+              "    pm.response.to.not.have.jsonBody(\"\"); ",
+              "    pm.response.to.not.have.jsonBody(\"error\"); ",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "a28e5c12-ed5b-497b-866e-c9772dc9d557",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorized-Pickup-Customers-1",
+            "type": "text",
+            "value": "{{pickup-LBL}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"pickup\": \"5320037\",\r\n    \"package\": {\r\n        \"distributionCenter\": \"USRDU1\",\r\n        \"orderedProductId\": \"EXP\",\r\n        \"consigneeAddress\": {\r\n            \"name\": \"Krishna kumar\",\r\n            \"companyName\": \"Krishna Inc\",\r\n            \"address1\": \"935 Blackmar Way\",\r\n            \"address2\": \"Near Cavendish Pl\",\r\n            \"address3\": \"\",\r\n            \"city\": \"Suwanee\",\r\n            \"state\": \"GA\",\r\n            \"country\": \"US\",\r\n            \"postalCode\": \"30024\",\r\n            \"email\": \"2@y.com\",\r\n            \"phone\": \"44423440348\"\r\n        },\r\n        \"returnAddress\": {\r\n            \"name\": \"Krish Bloggs\",\r\n            \"companyName\": \"Joe Inc.\",\r\n            \"address1\": \"4552 OLD DIXIE HWY\",\r\n            \"address2\": \"Near Pixar road\",\r\n            \"city\": \"Baltimore\",\r\n            \"state\": \"MD\",\r\n            \"country\": \"US\",\r\n            \"postalCode\": \"30024\",\r\n            \"email\": \"2@y.com\",\r\n            \"phone\": \"44423440348\"\r\n        },\r\n        \"pickupAddress\": {\r\n            \"name\": \"Mohit\",\r\n            \"address1\": \"23948 theredd way\",\r\n            \"address2\": \"sharesdirfg\",\r\n            \"address3\": \"Ventura inn\",\r\n            \"city\": \"Bahamas\",\r\n            \"state\": \"CO\",\r\n            \"country\": \"US\",\r\n            \"postalCode\": \"30034\",\r\n            \"email\": \"2@y.com\",\r\n            \"phone\": \"44423440348\"\r\n        },\r\n        \"shipperAddress\": {\r\n            \"name\": \"Chuck\",\r\n            \"address1\": \"494376 Near Highway\",\r\n            \"address2\": \"Thereway\",\r\n            \"address3\": \"Hereway\",\r\n            \"city\": \"Bermuda\",\r\n            \"state\": \"MI\",\r\n            \"country\": \"US\",\r\n            \"postalCode\": \"30032\",\r\n            \"email\": \"2@y.com\",\r\n            \"phone\": \"44423440348\"\r\n        },\r\n        \"packageDetail\": {\r\n            \"packageId\": \"{{packageId}}\",\r\n            \"packageDescription\": \"test package desc\",\r\n            \"weight\": {\r\n                \"value\": 10,\r\n                \"unitOfMeasure\": \"OZ\"\r\n            },\r\n            \"service\": \"DELCON\",\r\n            \"serviceEndorsement\": \"1\",\r\n            \"billingReference1\": \"test bill ref 1\",\r\n            \"billingReference2\": \"test bill ref 2\",\r\n            \"shippingCost\": {\r\n                \"currency\": \"USD\",\r\n                \"freight\": 4,\r\n                \"declaredValue\": 76,\r\n                \"insuredValue\": 89,\r\n                \"dutiesPaid\": \"Y\"\r\n            }\r\n        },\r\n        \"customsDetails\": [\r\n            {\r\n                \"itemDescription\": \"test desc\",\r\n                \"countryOfOrigin\": \"CN\",\r\n                \"hsCode\": \"123456\",\r\n                \"packagedQuantity\": 2,\r\n                \"skuNumber\": \"\",\r\n                \"itemValue\": 30\r\n            }\r\n        ]\r\n    }\r\n}"
+        },
+        "url": "{{VLD-URL}}",
+        "description": "To create a dom label with static data (except packageId which will be made unique)"
+      },
+      "response": []
+    },
+    {
+      "name": "Label DOM Min template",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "b8a580c4-a827-484c-b6e5-7e88337cec02",
+            "exec": [
+              "pm.test(\"Create Label Request is successful\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Create Label Response is ok\", function () { ",
+              "    pm.response.to.not.be.error; ",
+              "    pm.response.to.not.have.jsonBody(\"\"); ",
+              "    pm.response.to.not.have.jsonBody(\"error\"); ",
+              "});",
+              "",
+              "pm.test(\"Create Label Response time is less than 5s\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "//console.log(pm.response.status)",
+              "//pm.test.skip(\"Response is not 200\", () => {",
+              "",
+              "var jsonData = pm.response.json();",
+              " if (pm.response.status == 'OK') {",
+              "",
+              "pm.test(\"orderedProductId same as billedProductId\", function () {",
+              "      pm.expect(jsonData.orderedProductId).to.eql(jsonData.billedProductId);",
+              "});",
+              "",
+              "pm.test(\"packageId returned same as packageId requested\", function () {",
+              "      pm.expect(toString(jsonData.labels[0].packageId)).to.eql(toString(pm.environment.get(\"packageId\")));",
+              "});",
+              "",
+              "pm.test(\"field encodeType is present\", function () {",
+              "      pm.expect(jsonData.labels[0].encodeType).not.eql(null);",
+              "});",
+              "pm.test(\"field format is present\", function () {",
+              "      pm.expect(jsonData.labels[0].format).not.eql(null);",
+              "});",
+              "pm.test(\"field construct is present\", function () {",
+              "      pm.expect(jsonData.labels[0].labelDetail.construct).not.eql(null);",
+              "});",
+              "pm.test(\"field stc is present\", function () {",
+              "      pm.expect(jsonData.labels[0].labelDetail.stc).not.eql(null);",
+              "});",
+              "pm.test(\"field serviceLevel is present\", function () {",
+              "      pm.expect(jsonData.labels[0].labelDetail.serviceLevel).not.eql(null);",
+              "});",
+              "pm.test(\"field outboundSortCode is present\", function () {",
+              "      pm.expect(jsonData.labels[0].labelDetail.outboundSortCode).not.eql(null);",
+              "});",
+              "pm.test(\"field carrierRoute is present\", function () {",
+              "      pm.expect(jsonData.labels[0].labelDetail.carrierRoute).not.eql(null);",
+              "});",
+              "pm.test(\"field inboundSortCode is present\", function () {",
+              "      pm.expect(jsonData.labels[0].labelDetail.inboundSortCode).not.eql(null);",
+              "});",
+              "pm.test(\"field mailBanner is present\", function () {",
+              "      pm.expect(jsonData.labels[0].labelDetail.mailBanner).not.eql(null);",
+              "});",
+              "pm.test(\"field customsDetailsProvided is present\", function () {",
+              "      pm.expect(jsonData.labels[0].labelDetail.customsDetailsProvided).not.eql(null);",
+              "});",
+              "pm.test(\"field sortingSetupVersion is present\", function () {",
+              "      pm.expect(jsonData.labels[0].labelDetail.sortingSetupVersion).not.eql(null);",
+              "});",
+              "pm.test(\"field customsDetailsProvided is present\", function () {",
+              "      pm.expect(jsonData.labels[0].labelDetail.customsDetailsProvided).not.eql(null);",
+              "});",
+              "pm.test(\"field productShortCode is present\", function () {",
+              "      pm.expect(jsonData.labels[0].labelDetail.productShortCode).not.eql(null);",
+              "});",
+              "pm.test(\"field serviceEndorsement is present\", function () {",
+              "      pm.expect(jsonData.labels[0].labelDetail.serviceEndorsement).not.eql(null);",
+              "});",
+              "pm.test(\"field labelData is present\", function () {",
+              "      pm.expect(jsonData.labels[0].labelData).not.eql(null);",
+              "});",
+              "console.log(jsonData.labels[0].labelData);",
+              "}",
+              "   ",
+              "//});",
+              "",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "bf72011d-296d-485a-834c-9e5a631f6328",
+            "exec": [
+              "var moment = require('moment');",
+              "pm.environment.set(\"packageId\", \"v4API\" + moment());",
+              "pm.environment.set(\"weight\", _.random(1, 15));",
+              "if (pm.environment.get(\"weight\") % 2 === 0 )",
+              "{",
+              " pm.environment.set(\"weightuom\", \"LB\")  ; ",
+              "}",
+              "else {",
+              "    pm.environment.set(\"weightuom\", \"KG\")   ;",
+              "}",
+              "console.log(moment());",
+              "console.log (pm.environment.get(\"weight\"));",
+              "console.log (pm.environment.get(\"weightuom\"));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "e6977904-375a-4cea-8e71-691c64f1e0a6",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorized-Pickup-Customers-1",
+            "type": "text",
+            "value": "{{pickup-LBL}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"pickup\": \"{{pickup-LBL}}\",\r\n    \"package\": {\r\n        \"distributionCenter\": \"{{distributionCenter}}\",\r\n        \"orderedProductId\": \"{{orderedProductId}}\",\r\n        \"consigneeAddress\": {\r\n            \"name\": \"{{consigneeName}}\",\r\n            \"address1\": \"{{consigneeAddress1}}\",\r\n            \"city\": \"{{consigneeCity}}\",\r\n            \"state\": \"{{consigneeState}}\",\r\n            \"country\": \"{{consigneeCountry}}\",\r\n            \"postalCode\": \"{{consigneePostalCode}}\"\r\n        },\r\n        \"returnAddress\": {\r\n            \"name\": \"{{returnName}}\",\r\n            \"address1\": \"{{returnAddress1}}\",\r\n            \"city\": \"{{returnCity}}\",\r\n            \"state\": \"{{returnState}}\",\r\n            \"country\": \"{{returnCountry}}\",\r\n            \"postalCode\": \"{{returnPostalCode}}\"\r\n        },\r\n        \"packageDetail\": {\r\n            \"packageId\": \"{{packageId}}\",\r\n            \"weight\": {\r\n                \"value\": {{weight}},\r\n                \"unitOfMeasure\": \"{{weightuom}}\"\r\n            }\r\n        }\r\n    }\r\n}"
+        },
+        "url": "{{VLD-URL}}",
+        "description": "To create a dom label from a file with minimum data"
+      },
+      "response": []
+    },
+    {
+      "name": "Label DOM Max template",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "9819e737-a757-447c-b912-1cfd06b86120",
+            "exec": [
+              "",
+              "var jsonData = pm.response.json();",
+              " if (pm.iterationData.get(\"intention\") == \"positive\") {",
+              "     ",
+              "pm.test(\"Validation worked\", function () {",
+              "pm.expect(jsonData.sourceSystem).to.eql(pm.iterationData.get(\"sourceSystem\"));",
+              "pm.expect(String(pm.iterationData.get(\"productId\"))).to.eql(String(jsonData.productId));",
+              "if (pm.iterationData.get(\"sourceSystem\") == \"DOM\") {",
+              "pm.expect(String(pm.iterationData.get(\"mailTypeCode\"))).to.eql(String(jsonData.mailTypeCode)); ",
+              "}",
+              "});",
+              "",
+              "} ",
+              " ",
+              "else if (pm.iterationData.get(\"intention\") == \"negative\") {",
+              "pm.test(\"Validation worked\", function () {",
+              "pm.expect(jsonData.title).to.eql(pm.iterationData.get(\"errorTitle\"));",
+              "pm.expect(jsonData.InvalidParams[0].path).to.eql(pm.iterationData.get(\"errorPath\"));",
+              " });     ",
+              " ",
+              "     ",
+              "     ",
+              "}",
+              "",
+              "console.log(pm.response.status);"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "d7a1e967-74a9-4992-a779-9f093fdff69a",
+            "exec": [
+              "var moment = require('moment');",
+              "pm.environment.set(\"packageId\", \"v4API\" + moment());",
+              "//pm.environment.set(\"weight\", _.random(1, 15));",
+              "//if (pm.environment.get(\"weight\") % 2 === 0 )",
+              "//{",
+              "// pm.environment.set(\"weightuom\", \"LB\")  ; ",
+              "//}",
+              "//else {",
+              "//    pm.environment.set(\"weightuom\", \"KG\")   ;",
+              "//}",
+              "console.log(moment());"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "31567648-9d91-4ba5-bdfb-76d3523eafe4",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorized-Pickup-Customers-1",
+            "type": "text",
+            "value": "{{pickup-LBL}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"pickup\": \"{{pickup-LBL}}\",\n    \"package\": {\n        \"distributionCenter\": \"{{distributionCenter}}\",\n        \"orderedProductId\": \"{{orderedProductId}}\",\n        \"consigneeAddress\": {\n            \"name\": \"{{consigneeName}}\",\n            \"address1\": \"{{consigneeAddress1}}\",\n            \"address2\": \"{{consigneeAddress2}}\",\n            \"address3\": \"{{consigneeAddress3}}\",\n            \"city\": \"{{consigneeCity}}\",\n            \"state\": \"{{consigneeState}}\",\n            \"country\": \"{{consigneeCountry}}\",\n            \"postalCode\": \"{{consigneePostalCode}}\",\n            \"email\": \"{{consigneeEmail}}\",\n            \"phone\": \"{{consigneePhone}}\",\n            \"idNumber\": \"{{consigneeIdNumber}}\",\n            \"idType\": {{consigneeIdType}}\n        },\n        \"returnAddress\": {\n            \"name\": \"{{returnName}}\",\n            \"address1\": \"{{returnAddress1}}\",\n            \"address2\": \"{{returnAddress2}}\",\n            \"address3\": \"{{returnAddress3}}\",\n            \"city\": \"{{returnCity}}\",\n            \"state\": \"{{returnState}}\",\n            \"country\": \"{{returnCountry}}\",\n            \"postalCode\": \"{{returnPostalCode}}\",\n             \"email\": \"{{returnEmail}}\",\n            \"phone\": \"{{returnPhone}}\"\n        },\n                \"pickupAddress\": {\n            \"name\": \"{{pickupName}}\",\n            \"address1\": \"{{pickupAddress1}}\",\n            \"address2\": \"{{pickupAddress2}}\",\n            \"address3\": \"{{pickupAddress3}}\",\n            \"city\": \"{{pickupCity}}\",\n            \"state\": \"{{pickupState}}\",\n            \"country\": \"{{pickupCountry}}\",\n            \"postalCode\": \"{{pickupPostalCode}}\",\n             \"email\": \"{{pickupEmail}}\",\n            \"phone\": \"{{pickupPhone}}\"\n        },\n                \"shipperAddress\": {\n            \"name\": \"{{shipperName}}\",\n            \"address1\": \"{{shipperAddress1}}\",\n            \"address2\": \"{{shipperAddress2}}\",\n            \"address3\": \"{{shipperAddress3}}\",\n            \"city\": \"{{shipperCity}}\",\n            \"state\": \"{{shipperState}}\",\n            \"country\": \"{{shipperCountry}}\",\n            \"postalCode\": \"{{shipperPostalCode}}\",\n             \"email\": \"{{shipperEmail}}\",\n            \"phone\": \"{{shipperPhone}}\"\n        },\n        \"packageDetail\": {\n            \"packageId\": \"{{packageId}}\",\n            \"packageDescription\": \"{{packageDescription}}\",\n            \"packageReference\": \"{{packageReference}}\",\n            \n            \"weight\": {\n                \"value\": {{weightValue}},\n                \"unitOfMeasure\": \"{{weightUom}}\"\n            },\n            \"dimension\": {\n            \t\"length\": {{length}},\n            \t\"width\": {{width}},\n            \t\"height\": {{height}},\n            \t\"unitOfMeasure\": \"{{dimUom}}\"\n            },\n            \"shippingCost\": {\n                \"currency\": \"{{currency}}\",\n                \"tax\":{{tax}},\n                \"freight\": {{freight}},\n                \"duty\": {{duty}},\n                \"cashOnDelivery\": {{cashOnDelivery}},\n                \"declaredValue\": {{declaredValue}},\n                \"insuredValue\": {{insuredValue}},\n                \"dutiesPaid\": \"{{dutiesPaid}}\"\n            },\n \n            \"service\": \"{{service}}\",\n            \"serviceEndorsement\": \"{{serviceEndorsement}}\",\n            \"billingReference1\": \"{{billingRef1}}\",\n            \"billingReference2\": \"{{billingRef2}}\"\n        },\n             \"customsDetails\": [\n            {\n                \"itemDescription\": \"{{itemDesc}}\",\n                \"countryOfOrigin\": \"{{coo}}\",\n                \"hsCode\": \"{{hsCode}}\",\n                \"packagedQuantity\": {{packagedQty}},\n                \"itemValue\": {{itemValue}},\n                \"skuNumber\": \"{{skuNumber}}\"\n            } ]\n        }\n    \n}"
+        },
+        "url": "{{VLD-URL}}",
+        "description": "To create a dom label from a file with max data"
+      },
+      "response": []
+    },
+    {
+      "name": "Label XBO Min Template",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "12acabe3-9e91-45a0-98ff-97a7a44c2741",
+            "exec": [
+              "var moment = require('moment');",
+              "pm.environment.set(\"packageId\", \"V4API\" + moment());",
+              "console.log(moment());"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "4812815e-dd0c-48bc-a15c-78ab707285e0",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (pm.iterationData.get(\"intention\") == \"negative\") {",
+              "pm.test(\"Product Finding Failed as expected\", function () {",
+              "pm.expect(jsonData.title).to.eql(pm.iterationData.get(\"errorTitle\"));",
+              "//pm.expect(jsonData.InvalidParams[0].path).to.eql(pm.iterationData.get(\"errorPath\"));",
+              " });    ",
+              "}",
+              "else if (pm.iterationData.get(\"intention\") == \"positive\") {",
+              " pm.environment.set(\"labelData\", jsonData.labels[0].labelData);",
+              " pm.test(\"Label created as expected\", function () {",
+              "pm.expect(String(jsonData.orderedProductId)).to.eql(String(pm.iterationData.get(\"orderedProductId\")));",
+              " });    ",
+              "}    ",
+              "else {",
+              "    ",
+              "}",
+              "",
+              "",
+              "if (pm.response.status == 'OK') {",
+              "pm.environment.set(\"labelData\", jsonData.labels[0].labelData);",
+              "var body = JSON.parse(pm.environment.get(\"packageArr\"));",
+              "var obj = pm.environment.get(\"packageId\");",
+              "body.push(obj);",
+              "pm.environment.set(\"packageArr\", JSON.stringify(body));",
+              "}",
+              "",
+              "pm.test(\"Request is successful\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Response is ok\", function () { ",
+              "    pm.response.to.not.be.error; ",
+              "    pm.response.to.not.have.jsonBody(\"\"); ",
+              "    pm.response.to.not.have.jsonBody(\"error\"); ",
+              "});",
+              "console.log(pm.response.status);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "2ecd222a-559b-423d-b658-6b27b3d24a30",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorized-Pickup-Customers-1",
+            "type": "text",
+            "value": "{{pickup-LBL}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"pickup\": \"{{pickup-LBL}}\",\n    \"package\": {\n        \"distributionCenter\": \"{{distributionCenter}}\",\n        \"orderedProductId\": \"{{orderedProductId}}\",\n        \"consigneeAddress\": {\n            \"name\": \"{{consigneeName}}\",\n            \"address1\": \"{{consigneeAddress1}}\",\n            \"address2\": \"{{consigneeAddress2}}\",\n            \"city\": \"{{consigneeCity}}\",\n            \"state\": \"{{consigneeState}}\",\n            \"country\": \"{{consigneeCountry}}\",\n            \"postalCode\": \"{{consigneePostalCode}}\"\n        },\n        \"returnAddress\": {\n            \"name\": \"{{returnName}}\",\n            \"address1\": \"{{returnAddress1}}\",\n            \"address2\": \"{{returnAddress2}}\",\n            \"city\": \"{{returnCity}}\",\n            \"state\": \"{{returnState}}\",\n            \"country\": \"{{returnCountry}}\",\n            \"postalCode\": \"{{returnPostalCode}}\",\n            \"phone\": \"{{returnPhone}}\"\n        },\n        \"packageDetail\": {\n            \"packageId\": \"{{packageId}}\",\n            \"packageReference\": \"{{packageReference}}\",\n            \n            \"weight\": {\n                \"value\": {{weightValue}},\n                \"unitOfMeasure\": \"{{weightUom}}\"\n            },\n \n            \"service\": \"{{service}}\",\n            \"serviceEndorsement\": \"{{serviceEndorsement}}\",\n            \"billingReference1\": \"{{billingRef1}}\",\n            \"billingReference2\": \"{{billingRef2}}\",\n            \"shippingCost\": {\n\t            \"currency\": \"{{currency}}\",\n\t            \"freight\": {{freight}},\n\t            \"declaredValue\": {{declaredValue}},\n\t            \"insuredValue\": {{insuredValue}},\n\t            \"dutiesPaid\": \"{{dutiesPaid}}\"\n\t            }\n        },\n         \"customsDetails\": [\n            {\n                \"itemDescription\": \"{{itemDesc}}\",\n                \"countryOfOrigin\": \"{{coo}}\",\n                \"hsCode\": \"{{hsCode}}\",\n                \"packagedQuantity\": {{packagedQty}},\n                \"skuNumber\": \"{{skuNumber}}\",\n                \"itemValue\": {{itemValue}}\n            } ]\n        }\n}"
+        },
+        "url": "{{LBL-URL}}format=ZPL",
+        "description": "To create a xbo label from a file with minimum data"
+      },
+      "response": []
+    },
+    {
+      "name": "Label XBO Max Template",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "12acabe3-9e91-45a0-98ff-97a7a44c2741",
+            "exec": [
+              "var moment = require('moment');",
+              "pm.environment.set(\"packageId\", \"V4API\" + moment());",
+              "//pm.environment.set(\"weight\", _.random(1, 15));",
+              "//if (pm.environment.get(\"weight\") % 2 === 0 )",
+              "//{",
+              "// pm.environment.set(\"weightuom\", \"LB\")  ; ",
+              "//}",
+              "//else {",
+              "//    pm.environment.set(\"weightuom\", \"KG\")   ;",
+              "//}",
+              "console.log(moment());"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "4812815e-dd0c-48bc-a15c-78ab707285e0",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (pm.iterationData.get(\"intention\") == \"negative\") {",
+              "pm.test(\"Product Finding Failed as expected\", function () {",
+              "pm.expect(jsonData.title).to.eql(pm.iterationData.get(\"errorTitle\"));",
+              "//pm.expect(jsonData.InvalidParams[0].path).to.eql(pm.iterationData.get(\"errorPath\"));",
+              " });    ",
+              "}",
+              "else if (pm.iterationData.get(\"intention\") == \"positive\") {",
+              " pm.environment.set(\"labelData\", jsonData.labels[0].labelData);",
+              " pm.test(\"Label created as expected\", function () {",
+              "pm.expect(String(jsonData.orderedProductId)).to.eql(String(pm.iterationData.get(\"orderedProductId\")));",
+              " });    ",
+              "}    ",
+              "else {",
+              "    ",
+              "}",
+              "",
+              "",
+              "if (pm.response.status == 'OK') {",
+              "pm.environment.set(\"labelData\", jsonData.labels[0].labelData);",
+              "var body = JSON.parse(pm.environment.get(\"packageArr\"));",
+              "var obj = pm.environment.get(\"packageId\");",
+              "body.push(obj);",
+              "pm.environment.set(\"packageArr\", JSON.stringify(body));",
+              "}",
+              "pm.test(\"Request is successful\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Response is ok\", function () { ",
+              "    pm.response.to.not.be.error; ",
+              "    pm.response.to.not.have.jsonBody(\"\"); ",
+              "    pm.response.to.not.have.jsonBody(\"error\"); ",
+              "});",
+              "console.log(pm.response.status);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "ba35d8ec-553a-489a-babf-8b4341bcb701",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorized-Pickup-Customers-1",
+            "type": "text",
+            "value": "{{pickup-LBL}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"pickup\": \"{{pickup-LBL}}\",\r\n    \"package\": {\r\n        \"distributionCenter\": \"{{distributionCenter}}\",\r\n        \"orderedProductId\": \"{{orderedProductId}}\",\r\n        \"consigneeAddress\": {\r\n            \"name\": \"{{consigneeName}}\",\r\n            \"address1\": \"{{consigneeAddress1}}\",\r\n            \"address2\": \"{{consigneeAddress2}}\",\r\n            \"city\": \"{{consigneeCity}}\",\r\n            \"state\": \"{{consigneeState}}\",\r\n            \"country\": \"{{consigneeCountry}}\",\r\n            \"postalCode\": \"{{consigneePostalCode}}\"\r\n        },\r\n        \"returnAddress\": {\r\n            \"name\": \"{{returnName}}\",\r\n            \"address1\": \"{{returnAddress1}}\",\r\n            \"address2\": \"{{returnAddress2}}\",\r\n            \"city\": \"{{returnCity}}\",\r\n            \"state\": \"{{returnState}}\",\r\n            \"country\": \"{{returnCountry}}\",\r\n            \"postalCode\": \"{{returnPostalCode}}\"\r\n        },\r\n                \"pickupAddress\": {\r\n            \"name\": \"{{pickupName}}\",\r\n            \"address1\": \"{{pickupAddress1}}\",\r\n            \"address2\": \"{{pickupAddress2}}\",\r\n            \"address3\": \"{{pickupAddress3}}\",\r\n            \"city\": \"{{pickupCity}}\",\r\n            \"state\": \"{{pickupState}}\",\r\n            \"country\": \"{{pickupCountry}}\",\r\n            \"postalCode\": \"{{pickupPostalCode}}\",\r\n             \"email\": \"{{pickupEmail}}\",\r\n            \"phone\": \"{{pickupPhone}}\"\r\n        },\r\n            \"shipperAddress\": {\r\n            \"name\": \"{{shipperName}}\",\r\n            \"address1\": \"{{shipperAddress1}}\",\r\n            \"address2\": \"{{shipperAddress2}}\",\r\n            \"address3\": \"{{shipperAddress3}}\",\r\n            \"city\": \"{{shipperCity}}\",\r\n            \"state\": \"{{shipperState}}\",\r\n            \"country\": \"{{shipperCountry}}\",\r\n            \"postalCode\": \"{{shipperPostalCode}}\",\r\n             \"email\": \"{{shipperEmail}}\",\r\n            \"phone\": \"{{shipperPhone}}\"\r\n        },\r\n        \"packageDetail\": {\r\n            \"packageId\": \"{{packageId}}\",\r\n            \"packageDescription\": \"{{packageDescription}}\",\r\n            \r\n            \"weight\": {\r\n                \"value\": {{weightValue}},\r\n                \"unitOfMeasure\": \"{{weightUom}}\"\r\n            },\r\n            \"service\": \"{{service}}\",\r\n            \"serviceEndorsement\": \"{{serviceEndorsement}}\",\r\n            \"billingReference1\": \"{{billingRef1}}\",\r\n            \"billingReference2\": \"{{billingRef2}}\",\r\n            \"shippingCost\": {\r\n\t            \"currency\": \"{{currency}}\",\r\n\t            \"freight\": {{freight}},\r\n\t            \"declaredValue\": {{declaredValue}},\r\n\t            \"insuredValue\": {{insuredValue}},\r\n\t            \"dutiesPaid\": \"{{dutiesPaid}}\"\r\n\t            }\r\n        },\r\n         \"customsDetails\": [\r\n            {\r\n                \"itemDescription\": \"{{itemDesc}}\",\r\n                \"countryOfOrigin\": \"{{coo}}\",\r\n                \"hsCode\": \"{{hsCode}}\",\r\n                \"packagedQuantity\": {{packagedQty}},\r\n                \"skuNumber\": \"{{skuNumber}}\",\r\n                \"itemValue\": {{itemValue}}\r\n            } ]\r\n        }\r\n    \r\n}"
+        },
+        "url": "{{LBL-URL}}format=ZPL",
+        "description": "To create a xbo label from a file with maximum data"
+      },
+      "response": []
+    },
+    {
+      "name": "Label DOM Static JSON",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "12acabe3-9e91-45a0-98ff-97a7a44c2741",
+            "exec": [
+              "var moment = require('moment');",
+              "pm.environment.set(\"packageId\", \"V4API\" + moment());",
+              "console.log(moment());"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "4812815e-dd0c-48bc-a15c-78ab707285e0",
+            "exec": [
+              "if (pm.response.status == 'OK') {",
+              "var jsonData = pm.response.json();",
+              "pm.environment.set(\"labelData\", jsonData.labels[0].labelData);",
+              "var body = JSON.parse(pm.environment.get(\"packageArr\"))",
+              "var obj = pm.environment.get(\"packageId\");",
+              "body.push(obj);",
+              "pm.environment.set(\"packageArr\", JSON.stringify(body));",
+              "}",
+              "",
+              "pm.test(\"Request is successful\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Response is ok\", function () { ",
+              "    pm.response.to.not.be.error; ",
+              "    pm.response.to.not.have.jsonBody(\"\"); ",
+              "    pm.response.to.not.have.jsonBody(\"error\"); ",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "dc8a72ff-29cd-4a10-8db2-93dcb9ea2372",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Authorized-Pickup-Customers-1",
+            "type": "text",
+            "value": "{{pickup-LBL}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"pickup\": \"{{pickup-LBL}}\",\r\n    \"package\": {\r\n        \"distributionCenter\": \"USRDU1\",\r\n        \"orderedProductId\": \"EXP\",\r\n        \"consigneeAddress\": {\r\n            \"name\": \"Krishna kumar\",\r\n            \"companyName\": \"Krishna Inc\",\r\n            \"address1\": \"935 Blackmar Way\",\r\n            \"address2\": \"Near Cavendish Pl\",\r\n            \"address3\": \"\",\r\n            \"city\": \"Suwanee\",\r\n            \"state\": \"GA\",\r\n            \"country\": \"US\",\r\n            \"postalCode\": \"30024\",\r\n            \"email\": \"2@y.com\",\r\n            \"phone\": \"44423440348\"\r\n        },\r\n        \"returnAddress\": {\r\n            \"name\": \"Krish Bloggs\",\r\n            \"companyName\": \"Joe Inc.\",\r\n            \"address1\": \"4552 OLD DIXIE HWY\",\r\n            \"address2\": \"Near Pixar road\",\r\n            \"city\": \"Baltimore\",\r\n            \"state\": \"MD\",\r\n            \"country\": \"US\",\r\n            \"postalCode\": \"30024\",\r\n            \"email\": \"2@y.com\",\r\n            \"phone\": \"44423440348\"\r\n        },\r\n        \"pickupAddress\": {\r\n            \"name\": \"Mohit\",\r\n            \"address1\": \"23948 theredd way\",\r\n            \"address2\": \"sharesdirfg\",\r\n            \"address3\": \"Ventura inn\",\r\n            \"city\": \"Bahamas\",\r\n            \"state\": \"CO\",\r\n            \"country\": \"US\",\r\n            \"postalCode\": \"30034\",\r\n            \"email\": \"2@y.com\",\r\n            \"phone\": \"44423440348\"\r\n        },\r\n        \"shipperAddress\": {\r\n            \"name\": \"Chuck\",\r\n            \"address1\": \"494376 Near Highway\",\r\n            \"address2\": \"Thereway\",\r\n            \"address3\": \"Hereway\",\r\n            \"city\": \"Bermuda\",\r\n            \"state\": \"MI\",\r\n            \"country\": \"US\",\r\n            \"postalCode\": \"30032\",\r\n            \"email\": \"2@y.com\",\r\n            \"phone\": \"44423440348\"\r\n        },\r\n        \"packageDetail\": {\r\n            \"packageId\": \"{{packageId}}\",\r\n            \"packageDescription\": \"test package desc\",\r\n            \"weight\": {\r\n                \"value\": 10,\r\n                \"unitOfMeasure\": \"OZ\"\r\n            },\r\n            \"service\": \"DELCON\",\r\n            \"serviceEndorsement\": \"1\",\r\n            \"billingReference1\": \"test bill ref 1\",\r\n            \"billingReference2\": \"test bill ref 2\",\r\n            \"shippingCost\": {\r\n                \"currency\": \"USD\",\r\n                \"freight\": 4,\r\n                \"declaredValue\": 76,\r\n                \"insuredValue\": 89,\r\n                \"dutiesPaid\": \"Y\"\r\n            }\r\n        },\r\n        \"customsDetails\": [\r\n            {\r\n                \"itemDescription\": \"test desc\",\r\n                \"countryOfOrigin\": \"CN\",\r\n                \"hsCode\": \"123456\",\r\n                \"packagedQuantity\": 2,\r\n                \"skuNumber\": \"\",\r\n                \"itemValue\": 30\r\n            }\r\n        ]\r\n    }\r\n}"
+        },
+        "url": {
+          "raw": "{{LBL-URL}}?format=PNG",
+          "host": [
+            "{{LBL-URL}}"
+          ],
+          "query": [
+            {
+              "key": "format",
+              "value": "PNG"
+            }
+          ]
+        },
+        "description": "To create a dom label with static data (except packageId which will be made unique)"
+      },
+      "response": []
+    },
+    {
+      "name": "Label DOM Static XML",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "9bd9f9d0-dd34-40f8-a193-366e3986548b",
+            "exec": [
+              "var moment = require('moment');",
+              "pm.environment.set(\"packageId\", \"V4API\" + moment());",
+              "console.log(moment());"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "c1a35c69-c642-4732-96d1-a772ef249370",
+            "exec": [
+              "if (pm.response.status == 'OK') {",
+              "var body = JSON.parse(pm.environment.get(\"packageArr\"))",
+              "var obj = pm.environment.get(\"packageId\");",
+              "body.push(obj);",
+              "pm.environment.set(\"packageArr\", JSON.stringify(body));",
+              "var responseJson = xml2Json(responseBody);",
+              "pm.environment.set(\"labelData\", responseJson.LabelResponse.Labels.Label.LabelData);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "cf762d32-f7a1-4fd9-9ef7-80711369455a",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/xml",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/xml",
+            "type": "text"
+          },
+          {
+            "key": "Authorized-Pickup-Customers-1",
+            "value": "{{pickup-LBL}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<LabelRequest xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"file://LabelRequest.xsd\">\n    <Pickup>{{pickup-LBL}}</Pickup>\n    <Package>\n        <DistributionCenter>USRDU1</DistributionCenter>\n        <MerchantId>3</MerchantId>\n        <OrderedProductId>MAX</OrderedProductId>\n        <ConsigneeAddress>\n            <Name>Krishna</Name>\n            <CompanyName>Krishna Inc</CompanyName>\n            <Address1>Consignee address 1 value</Address1>\n            <Address2>Consignee Address Value 2</Address2>\n            <City>Baltimore</City>\n            <State>MD</State>\n            <Country>US</Country>\n            <PostalCode>30024</PostalCode>\n            <Email>consignee@gmail.com</Email>\n            <Phone>345555</Phone>\n        </ConsigneeAddress>\n        <ReturnAddress>\n            <Name>Return name Value</Name>\n            <CompanyName>Consignee ComapnyName Value</CompanyName>\n            <Address1>Return Address Value 1</Address1>\n            <Address2>Return Address Value 2</Address2>\n            <Address3>Return Address Value 3</Address3>\n            <City>Baltimore</City>\n            <State>MD</State>\n            <Country>US</Country>\n            <PostalCode>30024</PostalCode>\n            <Email>Return@gmail.com</Email>\n            <Phone>345555</Phone>\n        </ReturnAddress>\n        <ShipperAddress>\n            <Name>shipper name Value</Name>\n            <CompanyName>Consignee ComapnyName Value</CompanyName>\n            <Address1>shipper Address Value 1</Address1>\n            <Address2>shipper Address Value 2</Address2>\n            <Address3>shipper Address Value 3</Address3>\n            <City>Baltimore</City>\n            <State>MD</State>\n            <Country>TH</Country>\n            <PostalCode>30024</PostalCode>\n            <Email>shipper@gmail.com</Email>\n            <Phone>345555</Phone>\n        </ShipperAddress>\n        <PickupAddress>\n            <Name>pickup_ name Value</Name>\n            <CompanyName>Consignee ComapnyName Value</CompanyName>\n            <Address1>pickup_ Address Value 1</Address1>\n            <Address2>pickup_ Address Value 2</Address2>\n            <Address3>pickup_ Address Value 3</Address3>\n            <City>Baltimore</City>\n            <State>MD</State>\n            <Country>TH</Country>\n            <PostalCode>30024</PostalCode>\n            <Email>pickup_@gmail.com</Email>\n            <Phone>345555</Phone>\n        </PickupAddress>\n        <PackageDetail>\n            <PackageId>{{packageId}}</PackageId>\n            <PackageDescription>TestPackageDescritpion</PackageDescription>\n            <PackageReference>TestPackagereference</PackageReference>\n            <Weight>\n                <Value>3.3</Value>\n                <UnitOfMeasure>OZ</UnitOfMeasure>\n            </Weight>\n            <Dimension>\n                <Length>2</Length>\n                <Width>3</Width>\n                <Height>1</Height>\n                <UnitOfMeasure>CM</UnitOfMeasure>\n            </Dimension>\n            <ShippingCost>\n                <Currency>USD</Currency>\n                <Tax>1.1</Tax>\n                <Freight>1.2</Freight>\n                <Duty>1.2</Duty>\n                <CashOnDelivery>1.4</CashOnDelivery>\n                <DeclaredValue>2.2</DeclaredValue>\n                <InsuredValue>4.5</InsuredValue>\n                <DutiesPaid>Y</DutiesPaid>\n            </ShippingCost>\n            <Service>DELCON</Service>\n            <ServiceEndorsement>1</ServiceEndorsement>\n            <BillingReference1>BillingRef1 Value</BillingReference1>\n            <BillingReference2>BillingRef2 Value</BillingReference2>\n        </PackageDetail>\n        <CustomsDetails>\n            <CustomsDetail>\n                <SkuNumber>TestSkuNumber</SkuNumber>\n                <ItemDescription>TestitemDesc</ItemDescription>\n                <CountryOfOrigin>US</CountryOfOrigin>\n                <HSCode>TestHs123</HSCode>\n                <PackagedQuantity>2</PackagedQuantity>\n                <ItemValue>2.2</ItemValue>\n            </CustomsDetail>\n        </CustomsDetails>\n    </Package>\n</LabelRequest>"
+        },
+        "url": {
+          "raw": "{{LBL-URL}}?format=ZPL",
+          "host": [
+            "{{LBL-URL}}"
+          ],
+          "query": [
+            {
+              "key": "format",
+              "value": "ZPL"
+            }
+          ]
+        },
+        "description": "To create a dom label with static xml data (except packageId which will be made unique)"
+      },
+      "response": [
+        {
+          "id": "4483ad4c-763e-4e58-b025-626b4cda925b",
+          "name": "Label Dom XML",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/xml",
+                "type": "text"
+              },
+              {
+                "key": "Authorized-Pickup-Customers-1",
+                "value": "ALL",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<LabelRequest xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"file://LabelRequest.xsd\">\r\n   <Pickup>5335608</Pickup>\r\n   <Package>\r\n      <DistributionCenter>USRDU1</DistributionCenter>\r\n      <MerchantId>3</MerchantId>\r\n      <OrderedProductId>GND</OrderedProductId>\r\n      <ConsigneeAddress>\r\n         <Address1>Consignee address 1 value</Address1>\r\n         <City>Suwanee</City>\r\n         <Country>US</Country>\r\n      </ConsigneeAddress>\r\n      <ReturnAddress>\r\n        <Name>Return name Value</Name>\r\n         <CompanyName>Consignee ComapnyName Value</CompanyName>\r\n         <Address1>Return Address Value 1</Address1>\r\n         <Address2>Return Address Value 2</Address2>\r\n         <Address3>Return Address Value 3</Address3>\r\n         <City>Baltimore</City>\r\n         <State>MD</State>\r\n         <Country>TH</Country>\r\n         <PostalCode>30024</PostalCode>\r\n         <Email>Return@gmail.com</Email>\r\n         <Phone>345555</Phone>\r\n      </ReturnAddress>\r\n      <ShipperAddress>\r\n        <Name>shipper name Value</Name>\r\n         <CompanyName>Consignee ComapnyName Value</CompanyName>\r\n         <Address1>shipper Address Value 1</Address1>\r\n         <Address2>shipper Address Value 2</Address2>\r\n         <Address3>shipper Address Value 3</Address3>\r\n         <City>Baltimore</City>\r\n         <State>MD</State>\r\n         <Country>TH</Country>\r\n         <PostalCode>30024</PostalCode>\r\n         <Email>shipper@gmail.com</Email>\r\n         <Phone>345555</Phone>\r\n      </ShipperAddress>\r\n      <PickupAddress>\r\n         <Name>pickup_ name Value</Name>\r\n         <CompanyName>Consignee ComapnyName Value</CompanyName>\r\n         <Address1>pickup_ Address Value 1</Address1>\r\n         <Address2>pickup_ Address Value 2</Address2>\r\n         <Address3>pickup_ Address Value 3</Address3>\r\n         <City>Baltimore</City>\r\n         <State>MD</State>\r\n         <Country>TH</Country>\r\n         <PostalCode>30024</PostalCode>\r\n         <Email>pickup_@gmail.com</Email>\r\n         <Phone>345555</Phone>\r\n      </PickupAddress>\r\n      <PackageDetail>\r\n         <PackageId>{{packageId}}</PackageId>\r\n         <PackageDescription>TestPackageDescritpion</PackageDescription>\r\n         <PackageReference>TestPackagereference</PackageReference>\r\n         <Weight>\r\n            <Value>3.3</Value>\r\n            <UnitOfMeasure>OZ</UnitOfMeasure>\r\n         </Weight>\r\n         <Dimension>\r\n            <Length>2</Length>\r\n            <Width>3</Width>\r\n            <Height>1</Height>\r\n            <UnitOfMeasure>CM</UnitOfMeasure>\r\n         </Dimension>\r\n         <ShippingCost>\r\n            <Currency>USD</Currency>\r\n            <Tax>1.1</Tax>\r\n            <Freight>1.2</Freight>\r\n            <Duty>1.2</Duty>\r\n            <CashOnDelivery>1.4</CashOnDelivery>\r\n            <DeclaredValue>2.2</DeclaredValue>\r\n            <InsuredValue>4.5</InsuredValue>\r\n            <DutiesPaid>Y</DutiesPaid>\r\n         </ShippingCost>\r\n         <ContentCategory>01</ContentCategory>\r\n         <Service>DELCON</Service>\r\n         <ServiceEndorsement>1</ServiceEndorsement>\r\n         <BillingReference1>BillingRef1 Value</BillingReference1>\r\n         <BillingReference2>BillingRef2 Value</BillingReference2>\r\n      </PackageDetail>\r\n      <CustomsDetails>\r\n         <CustomsDetail>\r\n            <SkuNumber>TestSkuNumber</SkuNumber>\r\n            <ItemDescription>TestitemDesc</ItemDescription>\r\n            <CountryOfOrigin>US</CountryOfOrigin>\r\n            <HSCode>TestHs123</HSCode>\r\n            <PackagedQuantity>2</PackagedQuantity>\r\n            <ItemValue>2.2</ItemValue>\r\n         </CustomsDetail>\r\n      </CustomsDetails>\r\n   </Package>\r\n</LabelRequest>"
+            },
+            "url": "{{LBL-URL}}format=ZPL"
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "xml",
+          "header": [
+            {
+              "key": "X-Correlation-Id",
+              "value": "2b1a7ff4-1ace-4f43-a6a3-439410402e28"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "1; mode=block"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/xml;charset=UTF-8"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 08 Nov 2019 14:02:34 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "<ErrorResponse>\n    <Type>https://api.dhlecommerce.com/400.0204003</Type>\n    <Title>Static Validation Failed</Title>\n    <InvalidParams>\n        <InvalidParam>\n            <Name>Document</Name>\n            <Reason>The processing instruction target matching \"[xX][mM][lL]\" is not allowed.</Reason>\n        </InvalidParam>\n    </InvalidParams>\n</ErrorResponse>"
+        }
+      ]
+    },
+    {
+      "name": "Label XBO Static JSON",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "12acabe3-9e91-45a0-98ff-97a7a44c2741",
+            "exec": [
+              "var moment = require('moment');",
+              "pm.environment.set(\"packageId\", \"V4API\" + moment());",
+              "console.log(moment());"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "4812815e-dd0c-48bc-a15c-78ab707285e0",
+            "exec": [
+              "",
+              "if (pm.response.status == 'OK') {",
+              "var jsonData = pm.response.json();",
+              "pm.environment.set(\"labelData\", jsonData.labels[0].labelData);",
+              "var body = JSON.parse(pm.environment.get(\"packageArr\"))",
+              "var obj = pm.environment.get(\"packageId\");",
+              "body.push(obj);",
+              "pm.environment.set(\"packageArr\", JSON.stringify(body));",
+              "}",
+              "pm.test(\"Request is successful\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Response is ok\", function () { ",
+              "    pm.response.to.not.be.error; ",
+              "    pm.response.to.not.have.jsonBody(\"\"); ",
+              "    pm.response.to.not.have.jsonBody(\"error\"); ",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "40405b39-df48-406c-abf1-2abd454ab6fa",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorized-Pickup-Customers-1",
+            "type": "text",
+            "value": "{{pickup-LBL}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"pickup\": \"{{pickup-LBL}}\",\n    \"package\": {\n        \"distributionCenter\": \"USRDU1\",\n        \"orderedProductId\": \"PLT\",\n        \"consigneeAddress\": {\n            \"name\": \"Krishna Natarajan\",\n            \"address1\": \"935 Blackmar Way\",\n            \"address2\": \"Near Cavendish Pl\",\n            \"city\": \"Suwanee\",\n            \"state\": \"GA\",\n            \"country\": \"AU\",\n            \"postalCode\": \"9999\",\n            \"phone\": \"44423440348\"\n        },\n        \"returnAddress\": {\n            \"name\": \"Joe Bloggs\",\n            \"address1\": \"4552 OLD DIXIE HWY\",\n            \"address2\": \"Near Pixar road\",\n            \"city\": \"Baltimore\",\n            \"state\": \"MD\",\n            \"country\": \"US\",\n            \"postalCode\": \"30024\"\n        },\n        \"pickupAddress\": {\n            \"name\": \"Mohit\",\n            \"address1\": \"23948 theredd way\",\n            \"address2\": \"sharesdirfg\",\n            \"address3\": \"Ventura inn\",\n            \"city\": \"Bahamas\",\n            \"state\": \"CO\",\n            \"country\": \"US\",\n            \"postalCode\": \"30034\",\n            \"email\": \"2@y.com\",\n            \"phone\": \"44423440348\"\n        },\n        \"shipperAddress\": {\n            \"name\": \"Chuck\",\n            \"address1\": \"494376 Near Highway\",\n            \"address2\": \"Thereway\",\n            \"address3\": \"Hereway\",\n            \"city\": \"Bermuda\",\n            \"state\": \"MD\",\n            \"country\": \"US\",\n            \"postalCode\": \"30032\",\n            \"email\": \"2@y.com\",\n            \"phone\": \"44423440348\"\n        },\n        \"packageDetail\": {\n            \"packageId\": \"{{packageId}}\",\n            \"packageDescription\": \"test package desc\",\n            \"weight\": {\n                \"value\": 70,\n                \"unitOfMeasure\": \"OZ\"\n            },\n            \"service\": \"DELCON\",\n            \"serviceEndorsement\": \"1\",\n            \"billingReference1\": \"test bill ref 1\",\n            \"billingReference2\": \"test bill ref 2\",\n            \"shippingCost\": {\n                \"currency\": \"USD\",\n                \"freight\": 4,\n                \"declaredValue\": 76,\n                \"insuredValue\": 89,\n                \"dutiesPaid\": \"N\"\n            }\n        },\n        \"customsDetails\": [\n            {\n                \"itemDescription\": \"test desc\",\n                \"countryOfOrigin\": \"CN\",\n                \"hsCode\": \"123456\",\n                \"packagedQuantity\": 2,\n                \"skuNumber\": \"123\",\n                \"itemValue\": 34\n            }\n        ]\n    }\n}"
+        },
+        "url": {
+          "raw": "{{LBL-URL}}?format=ZPL",
+          "host": [
+            "{{LBL-URL}}"
+          ],
+          "query": [
+            {
+              "key": "format",
+              "value": "ZPL"
+            }
+          ]
+        },
+        "description": "To create a xbo label with static data (except packageId which will be made unique)"
+      },
+      "response": []
+    },
+    {
+      "name": "Label XBO Static XML",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "9bd9f9d0-dd34-40f8-a193-366e3986548b",
+            "exec": [
+              "var moment = require('moment');",
+              "pm.environment.set(\"packageId\", \"V4API\" + moment());",
+              "console.log(moment());"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "745730ab-c761-4374-8011-29f4cf44dc5d",
+            "exec": [
+              "if (pm.response.status == 'OK') {",
+              "var body = JSON.parse(pm.environment.get(\"packageArr\"))",
+              "var obj = pm.environment.get(\"packageId\");",
+              "body.push(obj);",
+              "pm.environment.set(\"packageArr\", JSON.stringify(body));",
+              "}",
+              "var responseJson = xml2Json(responseBody);",
+              "pm.environment.set(\"labelData\", responseJson.LabelResponse.Labels.Label.LabelData);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "3358bcdd-52ab-42c6-b0fe-10d3aab7c702",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/xml"
+          },
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/xml"
+          },
+          {
+            "key": "Authorized-Pickup-Customers-1",
+            "type": "text",
+            "value": "{{pickup-LBL}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<LabelRequest xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"file://LabelRequest.xsd\">\n    <Pickup>{{pickup-LBL}}</Pickup>\n    <Package>\n        <DistributionCenter>USRDU1</DistributionCenter>\n        <MerchantId>3</MerchantId>\n        <OrderedProductId>PLT</OrderedProductId>\n        <ConsigneeAddress>\n            <Name>consignee name Value</Name>\n            <CompanyName>Consignee Company Name Value</CompanyName>\n            <Address1>Consignee address 1 value</Address1>\n            <Address2>Consginee Address Value 2</Address2>\n            <Address3>Consignee Address Value 3</Address3>\n            <City>Baltimore</City>\n            <State>MD</State>\n            <Country>CA</Country>\n            <PostalCode>123-4567</PostalCode>\n            <Email>consignee@gmail.com</Email>\n            <Phone>345555</Phone>\n        </ConsigneeAddress>\n        <ReturnAddress>\n            <Name>Return name Value</Name>\n            <CompanyName>Consignee ComapnyName Value</CompanyName>\n            <Address1>Return Address Value 1</Address1>\n            <Address2>Return Address Value 2</Address2>\n            <Address3>Return Address Value 3</Address3>\n            <City>Baltimore</City>\n            <State>MD</State>\n            <Country>JP</Country>\n            <PostalCode>30024</PostalCode>\n            <Email>Return@gmail.com</Email>\n            <Phone>345555</Phone>\n        </ReturnAddress>\n        <ShipperAddress>\n            <Name>shipper name Value</Name>\n            <CompanyName>Consignee ComapnyName Value</CompanyName>\n            <Address1>shipper Address Value 1</Address1>\n            <Address2>shipper Address Value 2</Address2>\n            <Address3>shipper Address Value 3</Address3>\n            <City>Baltimore</City>\n            <State>MD</State>\n            <Country>TH</Country>\n            <PostalCode>30024</PostalCode>\n            <Email>shipper@gmail.com</Email>\n            <Phone>345555</Phone>\n        </ShipperAddress>\n        <PickupAddress>\n            <Name>pickup_ name Value</Name>\n            <CompanyName>Consignee ComapnyName Value</CompanyName>\n            <Address1>pickup_ Address Value 1</Address1>\n            <Address2>pickup_ Address Value 2</Address2>\n            <Address3>pickup_ Address Value 3</Address3>\n            <City>Baltimore</City>\n            <State>MD</State>\n            <Country>TH</Country>\n            <PostalCode>30024</PostalCode>\n            <Email>pickup_@gmail.com</Email>\n            <Phone>345555</Phone>\n        </PickupAddress>\n        <PackageDetail>\n            <PackageId>{{packageId}}</PackageId>\n            <PackageDescription>TestPackageDescritpion</PackageDescription>\n            <PackageReference>TestPackagereference</PackageReference>\n            <Weight>\n                <Value>3.3</Value>\n                <UnitOfMeasure>OZ</UnitOfMeasure>\n            </Weight>\n            <Dimension>\n                <Length>2</Length>\n                <Width>3</Width>\n                <Height>1</Height>\n                <UnitOfMeasure>CM</UnitOfMeasure>\n            </Dimension>\n            <ShippingCost>\n                <Currency>USD</Currency>\n                <Tax>1.1</Tax>\n                <Freight>1.2</Freight>\n                <Duty>1.2</Duty>\n                <CashOnDelivery>1.4</CashOnDelivery>\n                <DeclaredValue>2.2</DeclaredValue>\n                <InsuredValue>4.5</InsuredValue>\n                <DutiesPaid>Y</DutiesPaid>\n            </ShippingCost>\n            <ContentCategory>01</ContentCategory>\n            <Service>DELCON</Service>\n            <ServiceEndorsement>1</ServiceEndorsement>\n            <BillingReference1>BillingRef1 Value</BillingReference1>\n            <BillingReference2>BillingRef2 Value</BillingReference2>\n        </PackageDetail>\n        <CustomsDetails>\n            <CustomsDetail>\n                <SkuNumber>TestSkuNumber</SkuNumber>\n                <ItemDescription>TestitemDesc</ItemDescription>\n                <CountryOfOrigin>US</CountryOfOrigin>\n                <HSCode>TestHs123</HSCode>\n                <PackagedQuantity>2</PackagedQuantity>\n                <ItemValue>2.2</ItemValue>\n            </CustomsDetail>\n        </CustomsDetails>\n    </Package>\n</LabelRequest>"
+        },
+        "url": {
+          "raw": "{{LBL-URL}}?format=ZPL",
+          "host": [
+            "{{LBL-URL}}"
+          ],
+          "query": [
+            {
+              "key": "format",
+              "value": "ZPL"
+            }
+          ]
+        },
+        "description": "To create a xbo label with static xml data (except packageId which will be made unique)"
+      },
+      "response": [
+        {
+          "id": "ead381a0-d94c-4ce2-8013-7ce728698f3b",
+          "name": "Label Dom XML",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/xml",
+                "type": "text"
+              },
+              {
+                "key": "Authorized-Pickup-Customers-1",
+                "value": "ALL",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\r\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<LabelRequest xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"file://LabelRequest.xsd\">\r\n   <Pickup>5335608</Pickup>\r\n   <Package>\r\n      <DistributionCenter>USRDU1</DistributionCenter>\r\n      <MerchantId>3</MerchantId>\r\n      <OrderedProductId>GND</OrderedProductId>\r\n      <ConsigneeAddress>\r\n         <Address1>Consignee address 1 value</Address1>\r\n         <City>Suwanee</City>\r\n         <Country>US</Country>\r\n      </ConsigneeAddress>\r\n      <ReturnAddress>\r\n        <Name>Return name Value</Name>\r\n         <CompanyName>Consignee ComapnyName Value</CompanyName>\r\n         <Address1>Return Address Value 1</Address1>\r\n         <Address2>Return Address Value 2</Address2>\r\n         <Address3>Return Address Value 3</Address3>\r\n         <City>Baltimore</City>\r\n         <State>MD</State>\r\n         <Country>TH</Country>\r\n         <PostalCode>30024</PostalCode>\r\n         <Email>Return@gmail.com</Email>\r\n         <Phone>345555</Phone>\r\n      </ReturnAddress>\r\n      <ShipperAddress>\r\n        <Name>shipper name Value</Name>\r\n         <CompanyName>Consignee ComapnyName Value</CompanyName>\r\n         <Address1>shipper Address Value 1</Address1>\r\n         <Address2>shipper Address Value 2</Address2>\r\n         <Address3>shipper Address Value 3</Address3>\r\n         <City>Baltimore</City>\r\n         <State>MD</State>\r\n         <Country>TH</Country>\r\n         <PostalCode>30024</PostalCode>\r\n         <Email>shipper@gmail.com</Email>\r\n         <Phone>345555</Phone>\r\n      </ShipperAddress>\r\n      <PickupAddress>\r\n         <Name>pickup_ name Value</Name>\r\n         <CompanyName>Consignee ComapnyName Value</CompanyName>\r\n         <Address1>pickup_ Address Value 1</Address1>\r\n         <Address2>pickup_ Address Value 2</Address2>\r\n         <Address3>pickup_ Address Value 3</Address3>\r\n         <City>Baltimore</City>\r\n         <State>MD</State>\r\n         <Country>TH</Country>\r\n         <PostalCode>30024</PostalCode>\r\n         <Email>pickup_@gmail.com</Email>\r\n         <Phone>345555</Phone>\r\n      </PickupAddress>\r\n      <PackageDetail>\r\n         <PackageId>{{packageId}}</PackageId>\r\n         <PackageDescription>TestPackageDescritpion</PackageDescription>\r\n         <PackageReference>TestPackagereference</PackageReference>\r\n         <Weight>\r\n            <Value>3.3</Value>\r\n            <UnitOfMeasure>OZ</UnitOfMeasure>\r\n         </Weight>\r\n         <Dimension>\r\n            <Length>2</Length>\r\n            <Width>3</Width>\r\n            <Height>1</Height>\r\n            <UnitOfMeasure>CM</UnitOfMeasure>\r\n         </Dimension>\r\n         <ShippingCost>\r\n            <Currency>USD</Currency>\r\n            <Tax>1.1</Tax>\r\n            <Freight>1.2</Freight>\r\n            <Duty>1.2</Duty>\r\n            <CashOnDelivery>1.4</CashOnDelivery>\r\n            <DeclaredValue>2.2</DeclaredValue>\r\n            <InsuredValue>4.5</InsuredValue>\r\n            <DutiesPaid>Y</DutiesPaid>\r\n         </ShippingCost>\r\n         <ContentCategory>01</ContentCategory>\r\n         <Service>DELCON</Service>\r\n         <ServiceEndorsement>1</ServiceEndorsement>\r\n         <BillingReference1>BillingRef1 Value</BillingReference1>\r\n         <BillingReference2>BillingRef2 Value</BillingReference2>\r\n      </PackageDetail>\r\n      <CustomsDetails>\r\n         <CustomsDetail>\r\n            <SkuNumber>TestSkuNumber</SkuNumber>\r\n            <ItemDescription>TestitemDesc</ItemDescription>\r\n            <CountryOfOrigin>US</CountryOfOrigin>\r\n            <HSCode>TestHs123</HSCode>\r\n            <PackagedQuantity>2</PackagedQuantity>\r\n            <ItemValue>2.2</ItemValue>\r\n         </CustomsDetail>\r\n      </CustomsDetails>\r\n   </Package>\r\n</LabelRequest>"
+            },
+            "url": "{{LBL-URL}}format=ZPL"
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "xml",
+          "header": [
+            {
+              "key": "X-Correlation-Id",
+              "value": "2b1a7ff4-1ace-4f43-a6a3-439410402e28"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "X-XSS-Protection",
+              "value": "1; mode=block"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache, no-store, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            },
+            {
+              "key": "Expires",
+              "value": "0"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/xml;charset=UTF-8"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            },
+            {
+              "key": "Date",
+              "value": "Fri, 08 Nov 2019 14:02:34 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "close"
+            }
+          ],
+          "cookie": [],
+          "responseTime": null,
+          "body": "<ErrorResponse>\n    <Type>https://api.dhlecommerce.com/400.0204003</Type>\n    <Title>Static Validation Failed</Title>\n    <InvalidParams>\n        <InvalidParam>\n            <Name>Document</Name>\n            <Reason>The processing instruction target matching \"[xX][mM][lL]\" is not allowed.</Reason>\n        </InvalidParam>\n    </InvalidParams>\n</ErrorResponse>"
+        }
+      ]
+    },
+    {
+      "name": "Label",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "ea9aab72-35da-491e-8bc6-f1ceed58f97f",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "c2835097-1336-4e68-a7d6-e43a5ca65cd5",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.environment.set(\"labelData\", jsonData.labels[0].labelData);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "de011256-b06d-498e-b7a9-637715c31820",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorized-Pickup-Customers-1",
+            "type": "text",
+            "value": "{{pickup-LBL}}"
+          }
+        ],
+        "url": {
+          "raw": "{{LBL-URL}}/{{pickup-LBL}}?packageId={{packageId}}",
+          "host": [
+            "{{LBL-URL}}"
+          ],
+          "path": [
+            "{{pickup-LBL}}"
+          ],
+          "query": [
+            {
+              "key": "packageId",
+              "value": "{{packageId}}"
+            }
+          ]
+        },
+        "description": "To view an existing label"
+      },
+      "response": []
+    },
+    {
+      "name": "Manifest",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "12acabe3-9e91-45a0-98ff-97a7a44c2741",
+            "exec": [
+              "var moment = require('moment');",
+              "pm.environment.set(\"packageId\", \"v4API\" + moment());",
+              "console.log(moment());"
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "4812815e-dd0c-48bc-a15c-78ab707285e0",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "",
+              "if (pm.response.code == 200 || pm.response.code == 201) {",
+              "   // pm.environment.set(\"packageArr\", \"[]\");",
+              "}",
+              "pm.environment.set(\"manifestRefId\", jsonData.requestId);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "5ba0ae4e-408e-4a61-b5f5-69b8d6874594",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorized-Pickup-Customers-1",
+            "type": "text",
+            "value": "{{pickup-LBL}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n   \"pickup\": \"{{pickup-LBL}}\",\r\n   \"manifests\": [\r\n        {\r\n            \"packageIds\": {{packageArr}}\r\n        }\r\n    ]\r\n}"
+        },
+        "url": "{{MANIFEST-URL}}",
+        "description": "To post a new manifest request"
+      },
+      "response": []
+    },
+    {
+      "name": "Manifest",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "12acabe3-9e91-45a0-98ff-97a7a44c2741",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "4812815e-dd0c-48bc-a15c-78ab707285e0",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (pm.response.status == 'OK') {",
+              "//pm.environment.set(\"packageArr\", \"[]\");",
+              "console.log(jsonData.manifests.length);",
+              "for (var i = 0; i < jsonData.manifests.length; i++) { ",
+              "pm.environment.set(\"manifestData-\" + i, jsonData.manifests[i].manifestData );",
+              "}",
+              "}",
+              "",
+              "var template = `",
+              "    <table>",
+              "        <tr>",
+              "            <th>Created On</th>",
+              "            <th>Manifest ID</th>",
+              "            <th>DC</th>",
+              "            <th>is International</th>",
+              "            <th>total</th>",
+              "            <th>encodeType</th>",
+              "            <th>Format</th>",
+              "        </tr>",
+              "",
+              "        {{#each response}}",
+              "            <tr>",
+              "                <td>{{createdOn}}</td>",
+              "                <td>{{manifestId}}</td>",
+              "                <td>{{distributionCenter}}</td>",
+              "                <td>{{isInternational}}</td>",
+              "                <td>{{total}}</td>",
+              "                <td>{{encodeType}}</td>",
+              "                <td>{{format}}</td>",
+              "                </tr>",
+              "        {{/each}}",
+              "    </table>",
+              "`;",
+              "// Set visualizer",
+              "pm.visualizer.set(template, {",
+              "    // Pass the response body parsed as JSON as `data`",
+              "    response: pm.response.json().manifests",
+              "});",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "e8e9f620-08d2-4604-919a-7cee2592f164",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorized-Pickup-Customers-1",
+            "type": "text",
+            "value": "{{pickup-LBL}}"
+          }
+        ],
+        "url": "{{MANIFEST-URL}}{{pickup-LBL}}/{{manifestRefId}}",
+        "description": "To get a manifest"
+      },
+      "response": []
+    },
+    {
+      "name": "View ZPL",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "5e0b2770-8012-498b-9011-d6b2959660b6",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "fdb426f1-9251-4184-a25c-b444fad17032",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "image/png"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{{labelData}}"
+        },
+        "url": "http://api.labelary.com/v1/printers/8dpmm/labels/4x6/0/",
+        "description": "Requests a PNG image, using 8 dpmm print density (203 dpi) and a 4x6 label."
+      },
+      "response": []
+    },
+    {
+      "name": "View PDF",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "5e0b2770-8012-498b-9011-d6b2959660b6",
+            "exec": [
+              "console.log(pm.response.json)"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "80572d78-e3ea-41b4-9c3a-7f8a5fe4138a",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/pdf",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{{manifestData-0}}"
+        },
+        "url": "http://czcholsint1133.prg-dc.dhl.com:7063/shipping/v4/download",
+        "description": "To view the manifest pdf"
+      },
+      "response": []
+    },
+    {
+      "name": "View PNG",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "5e0b2770-8012-498b-9011-d6b2959660b6",
+            "exec": [
+              "console.log(pm.response.json)"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "4eed7a67-52b3-4ac1-bdb6-bdc1e3acfba1",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": {
+            "password": "{{Password}}",
+            "username": "{{Username}}",
+            "saveHelperData": true,
+            "showPassword": false
+          }
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "type": "text",
+            "value": "application/png"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{{labelData}}"
+        },
+        "url": "http://czcholsint1133.prg-dc.dhl.com:7063/shipping/v4/download",
+        "description": "To view the manifest pdf"
+      },
+      "response": []
+    },
+    {
+      "name": "AMP Label",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "9c6f1b56-833b-4f37-91d6-5cd02808d3b9",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "20f39f3f-302c-42f4-84c1-f38e1b90559f",
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "f7ccc871-c7b6-4bab-afcb-b84dc6434cff",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/xml",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "type": "text",
+            "value": "application/xml"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<EncodeRequest>\r\n    <CustomerId>5320037</CustomerId>\r\n    <BatchRef>0</BatchRef>\r\n    <HaltOnError>false</HaltOnError>\r\n    <RejectAllOnError>false</RejectAllOnError>\r\n    <MpuList>\r\n        <Mpu>\r\n            <PackageId>1346421550190323</PackageId>\r\n            <PackageRef>\r\n                <PrintFlag>true</PrintFlag>\r\n                <LabelText>55555555555555555</LabelText>\r\n            </PackageRef>\r\n            <ConsigneeAddress>\r\n                <StandardAddress>\r\n                    <Name>Joe Bloggs</Name>\r\n                    <Address1>4552 OLD DIXIE HWY</Address1>\r\n                    <City>BALTIMORE</City>\r\n                    <State>MD</State>\r\n                    <Zip>230399</Zip>\r\n                    <CountryCode>US</CountryCode>\r\n                </StandardAddress>\r\n            </ConsigneeAddress>\r\n            <ReturnAddress>\r\n                <StandardAddress>\r\n                    <Name>Joe Bloggs</Name>\r\n                    <Address1>4552 OLD DIXIE HWY</Address1>\r\n                    <City>BALTIMORE</City>\r\n                    <State>MD</State>\r\n                    <Zip>21234</Zip>\r\n                    <CountryCode>US</CountryCode>\r\n                </StandardAddress>\r\n            </ReturnAddress>\r\n            <OrderedProductCode>81</OrderedProductCode>\r\n            <Service>DELCON</Service>\r\n            <ServiceEndorsement>1</ServiceEndorsement>\r\n            <Weight>\r\n                <Value>1.01</Value>\r\n                <Unit>LB</Unit>\r\n            </Weight>\r\n            <BillingRef1>test ref 1</BillingRef1>\r\n            <BillingRef2>test ref 2</BillingRef2>\r\n            <MailTypeCode>2</MailTypeCode>\r\n            <FacilityCode>USRDU1</FacilityCode>\r\n            <ExpectedShipDate>20191108</ExpectedShipDate>\r\n        </Mpu>\r\n    </MpuList>\r\n</EncodeRequest>\r\n"
+        },
+        "url": {
+          "raw": "https://usqasls4062.phx-dc.dhl.com:8009/webservice/rest/v1/encodeWs/encode/labelAsZpl/batch?userId=Test",
+          "protocol": "https",
+          "host": [
+            "usqasls4062",
+            "phx-dc",
+            "dhl",
+            "com"
+          ],
+          "port": "8009",
+          "path": [
+            "webservice",
+            "rest",
+            "v1",
+            "encodeWs",
+            "encode",
+            "labelAsZpl",
+            "batch"
+          ],
+          "query": [
+            {
+              "key": "userId",
+              "value": "Test"
+            }
+          ]
+        },
+        "description": "To call the AMP label request"
+      },
+      "response": []
+    },
+    {
+      "name": "Reset Variables",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "5e0b2770-8012-498b-9011-d6b2959660b6",
+            "exec": [
+              "pm.environment.set(\"packageArr\", \"[]\");",
+              "pm.environment.set(\"manifestData-0\", \"[]\")",
+              "pm.environment.set(\"manifestData-1\", \"[]\");",
+              "pm.environment.set(\"manifestData-2\", \"[]\");",
+              "pm.environment.set(\"manifestData-3\", \"[]\");",
+              "pm.environment.set(\"manifestData-4\", \"[]\");",
+              "pm.environment.set(\"manifestData-5\", \"[]\");",
+              "pm.environment.set(\"manifestData-6\", \"[]\");",
+              "pm.environment.set(\"manifestData-7\", \"[]\");",
+              "pm.environment.set(\"manifestData-8\", \"[]\");",
+              "pm.environment.set(\"manifestData-9\", \"[]\");",
+              "pm.environment.set(\"manifestData-10\", \"[]\");",
+              "pm.environment.set(\"manifestData-11\", \"[]\");",
+              "pm.environment.set(\"manifestRefId\", \"\");",
+              "pm.environment.set(\"labelData\", \"\");",
+              "pm.environment.set(\"packageId\", \"\");",
+              "pm.environment.set(\"dhlPackageId\", \"\");"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "_postman_id": "30498ca4-21b2-4250-a658-594cb54e3111",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": "http://czcholsint1133.prg-dc.dhl.com:7063/shipping/v4/download",
+        "description": "Reset many environment variables around labelData, manifestData etc."
+      },
+      "response": []
+    }
+  ]
+}
